@@ -5,6 +5,7 @@
 1. Project detail
 2. Installing Dependencies
 3. Project setup
+4. Api Endpoints
 
 # 1-Project detail
 This project is a class project given us by Mr OURO. The goals of this project can be summarized in these points:
@@ -54,10 +55,22 @@ You can also use python extension for vscode if you are using visual studio code
 #### Database setup
 The project were made with postgres sql as database. You can use whatever database you want cause we used SQLAlchemy, an ORM of Flask. Check out the [official web site](https://www.sqlalchemy.org/). You just need to proceed  according to the [documentaition](https://docs.sqlalchemy.org/en/14/)  
 
-### API reference
+#### API reference
 Base URL: At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, http://localhost:5000; which is set as a proxy in frontend configuration.
 
-### Errors Handling
+#### Errors Handling
 Errors are retourned as JSON objects in the following format: { "success":False "error": 400 "message":"Bad request }
 
 The API will return four error types when requests fail: . 400: Bad request . 500: Internal server error . 422: Unprocessable . 404: Not found
+
+
+# 4- Api Endpoints
+There are 4 HTTP methods used : GET, POST, PATCH, DELETE for Book and Category.
+
+#### Category
+
+##### Show all categories
+This endpoints returns the list of all categories.
+
+the URL based on local server : http://127.0.0.1:5000/book/showallcategories
+

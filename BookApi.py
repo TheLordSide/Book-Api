@@ -136,7 +136,7 @@ def updatecategory(idcat):
 def addcategories():
 
     if request.method=='POST':
-        Libellecat=request.json.get('Libelle')
+        Libellecat=request.json.get('libelle_categorie')
         if not Libellecat:
             return jsonify({
                 'Notification':'Aucune valeur pour le libelle entree',
