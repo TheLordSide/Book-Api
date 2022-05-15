@@ -67,58 +67,72 @@ The API will return four error types when requests fail: . 400: Bad request . 50
 # 4- Api Endpoints
 There are 4 HTTP methods used : GET, POST, PATCH, DELETE for Book and Category.
 
-#### Category
+#### GET/book/showallcategories
 
 ##### Show all categories
 This endpoints returns the list of all categories, success value, Number of saved categories.
-
+```bash
 the URL based on local server : http://127.0.0.1:5000/book/showallcategories
+
+```
 
 ```bash
 {
     "Liste de categories": [
         {
             "id": 1,
-            "libelle": "Fiction"
+            "libelle_categorie": "Fiction"
         },
         {
             "id": 2,
-            "libelle": "Horreur"
+            "libelle_categorie": "Horreur"
         },
         {
             "id": 3,
-            "libelle": "Conte"
+            "libelle_categorie": "Conte"
         },
         {
             "id": 4,
-            "libelle": "Harlequin"
+            "libelle_categorie": "Harlequin"
         },
         {
             "id": 5,
-            "libelle": "Science"
+            "libelle_categorie": "Science"
         },
         {
             "id": 6,
-            "libelle": "Mecanique"
+            "libelle_categorie": "Mecanique"
         },
         {
             "id": 7,
-            "libelle": "Biologie"
+            "libelle_categorie": "Biologie"
         },
         {
             "id": 8,
-            "libelle": "Manuel"
+            "libelle_categorie": "Manuel"
         },
         {
             "id": 9,
-            "libelle": "Etudes"
+            "libelle_categorie": "Etudes"
         },
         {
             "id": 10,
-            "libelle": "Divertissement"
+            "libelle_categorie": "Divertissement"
         }
     ],
     "Nombre de categories": 10,
     "success": true
 }
+```
+##### Add a category
+This endpoints returns success value, Number of saved categories.
+```bash
+the URL based on local server : http://127.0.0.1:5000/book//addcategories
+
+```
+```bash
+{
+    "libelle_categorie":"Divertissement"
+}
+
 ```

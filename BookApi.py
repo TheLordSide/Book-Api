@@ -134,20 +134,20 @@ def updatecategory(idcat):
 
 @BookApi.route('/book/addcategories', methods=['POST'])
 def addcategories():
-
-    if request.method=='POST':
-        Libellecat=request.json.get('libelle_categorie')
+    try:
+        if request.method=='POST':
+            Libellecat=request.json.get('libelle_categorie')
         if not Libellecat:
             return jsonify({
                 'Error':'Aucune valeur entree',
-                'succes': False  
+                'success': False  
                 })
         session['Libelle']=Libellecat
         requete=Categories.query.filter(Categories.libelle_categorie==Libellecat).all()
         if requete:
             return jsonify({
                 'Erreur':'La categorie entrée existe déjà',
-                'succes': False  
+                'success': False  
                 })
         else:
             if not requete:
@@ -157,8 +157,10 @@ def addcategories():
                 return jsonify({
                     'Response':'enregistrement effectué',
                     'Nombre de Categorie':len(Categories.query.all()),
-                    'succes': True    
+                    'success': True    
                 })
+    except:
+        abort(405)
     
  
 ####################################################################################################################################################################
@@ -180,7 +182,7 @@ def showallcategories():
             for row in requete:
                 requestObj={}
                 requestObj['id']=row.id
-                requestObj['libelle']=row.libelle_categorie
+                requestObj['libelle_categorie']=row.libelle_categorie
                 categoriearray.append(requestObj)
             if not categoriearray:
                 return jsonify({
