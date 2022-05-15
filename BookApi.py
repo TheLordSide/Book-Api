@@ -1,11 +1,11 @@
 #Importation des modules
 
-from flask import Flask, jsonify, make_response, redirect, request,session, url_for
+from os import abort
+from flask import Flask, jsonify, make_response, redirect, request,session, url_for,abort
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import true
+from sqlalchemy import false
 BookApi = Flask(__name__)
 
-#configuration de la connexion a la base de donnee
 
 BookApi.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:010296@localhost:5432/bookdb'
 BookApi.config['SECRET_KEY']='MaCle'
@@ -106,41 +106,19 @@ def updatecategory(idcat):
                     'succes': False
                     })
         else:
-            Libellecat=request.json.get('Libelle')
-            if not Libellecat:
+            requete.libelle_categorie = request.json.get('libelle_categorie')
+            if requete.libelle_categorie == "":
+                  return jsonify({
+                                'Notification':'Aucune categorie entree',
+                                'succes': False
+                                })
+            else:
+                db.session.commit()
                 return jsonify({
-                    'Notification':'Aucune valeur pour le libelle entree',
-                    'succes': False  
-                    })
-            session['Libelle']=Libellecat
-            requete2=Categories.query.filter(Categories.libelle_categorie==Libellecat).all()
-            if requete2:
-                return jsonify({
-                    'Notification':'La categorie entrée existe déjà',
-                    'Nombre de Categorie':len(Categories.query.all()),
-                    'succes': False  
-                    })
-      
-        if requete:
-                    db.session.commit()
-                    return jsonify({
-                                'Notification':'enregistrement effectué',
-                                'Nombre de Categorie':len(Categories.query.all()),
-                                'succes': True    
-                            })
-                     
-                 
-        
-            
-          
-
-  
-
-
-
-
-
-
+                                'Notification':'Modifie avec succes',
+                                'id categorie moodifiee':idcat,
+                                'succes': True
+                                })
 
 
 
@@ -196,7 +174,7 @@ def addcategories():
                 
 @BookApi.route('/book/showallcategories', methods=['GET'])
 def showallcategories():
-        
+    if request.method=='GET':   
         requete= Categories.query.all()
         categoriearray=[]
         for row in requete:
@@ -293,12 +271,56 @@ def showbooklist():
                     })
 
 
+####################################################################################################################################################################
+#
+#
+#
+######## Show books by id
+#
+#
+#
+####################################################################################################################################################################   
+
+
+@BookApi.route('/book/showbooklist/<int:idlivre>', methods=['GET'])
+def showbookbyid(idlivre):
+     requete= Livres.query.filter(Livres.id==idlivre).all()
+     if not requete:
+           return jsonify({
+               'Notification' : 'Aucun Livre ne correspond au id entré',
+               'succes': False
+               }) 
+     Livrearray=[]
+     for row in requete:
+            requestObj={}
+            requestObj['id']=row.id
+            requestObj['isbn']=row.isbn
+            requestObj['titre']=row.titre
+            requestObj['date_publication']=row.date_publication
+            requestObj['auteur']=row.auteur
+            requestObj['editeur']=row.editeur
+            requestObj['categorie_id']=row.categorie_id
+            Livrearray.append(requestObj)
+     if not Livrearray:
+            return jsonify({
+                'Notification':'Aucun livre enregistré',
+                'Nombre de livres':len(requete),
+                'succes': False
+                })  
+     else:
+            if Livrearray:
+                return jsonify({
+                    'Id recherché' : idlivre,
+                    'Listecategorie' : Livrearray,
+                    'succes': True
+                    })
+
 
 ####################################################################################################################################################################
 #
 #
 #
-######## Show all books
+######## Add books
 #
 #
 #
@@ -306,36 +328,148 @@ def showbooklist():
 
 @BookApi.route('/book/addbooks', methods=['POST'])
 def addbooks():
-    if request.method=='POST':
-        isbn=request.json.get('isbn')
-        titre=request.json.get('titre')
-        date_publication=request.json.get('date_publication')
-        auteur=request.json.get('auteur')
-        editeur=request.json.get('editeur')
-        categorieid=request.json.get('idcategorie')
-        requete=Categories.query.filter(Categories.id==categorieid).all()
-        if not requete:
-             return jsonify({
-                 'Notification':'la categorie que vous entrez est indisponible',
-                 'succes': False
-                 })
+        if request.method=='POST':
+            isbn=request.json.get('isbn')
+            titre=request.json.get('titre')
+            date_publication=request.json.get('date_publication')
+            auteur=request.json.get('auteur')
+            editeur=request.json.get('editeur')
+            categorieid=request.json.get('idcategorie')
+            requete=Categories.query.filter(Categories.id==categorieid).all()
+            if not requete:
+                return jsonify({
+                    'Notification':'la categorie que vous entrez est indisponible',
+                    'succes': False
+                    })
+            else:
+                session['isbn']=isbn
+                session['titre']=titre
+                session['date_publication']=date_publication
+                session['auteur']=auteur
+                session['editeur']=editeur
+                session['idcategorie']=categorieid
+                livre=Livres(isbn,titre,date_publication,auteur,editeur,categorieid)
+                db.session.add(livre)
+                db.session.commit()
+                return jsonify({
+                    'Notification':'enregistrement effectué',
+                    'Nombre de Livres':len(Livres.query.all()),
+                    'succes': True
+                    })
+
+ 
+####################################################################################################################################################################
+#
+#
+#
+######## Delete book by ID
+#
+#
+#
+####################################################################################################################################################################    
+    
+@BookApi.route('/book/deletebook/<int:idlivre>', methods=['DELETE'])
+def deletebook(idlivre):
+    if request.method=='DELETE':
+        requete= Livres.query.get(idlivre)
+        if not requete: 
+            return jsonify({
+                    'Notification':'le livre que vous entrez est indisponible',
+                    'succes': False
+                    })
         else:
-            session['isbn']=isbn
-            session['titre']=titre
-            session['date_publication']=date_publication
-            session['auteur']=auteur
-            session['editeur']=editeur
-            session['idcategorie']=categorieid
-            livre=Livres(isbn,titre,date_publication,auteur,editeur,categorieid)
-            db.session.add(livre)
+            db.session.delete(requete)
+            db.session.commit()
+            return  jsonify({
+                    'Notification':'Suppression effectuée correctement',
+                    'Nombre de Livres': len(Livres.query.all()),
+                    'Livre effacé': idlivre,
+                    'succes': True
+                    })
+
+
+
+
+
+####################################################################################################################################################################
+#
+#
+#
+######## Update a book by ID
+#
+#
+#
+#################################################################################################################################################################### 
+
+@BookApi.route('/book/updatebook/<int:idbook>', methods=['PATCH'])
+def updatebook(idbook):
+    if request.method=='PATCH':
+        requete= Livres.query.get(idbook)
+        if not requete: 
+            return jsonify({
+                    'Notification':'id entré est inexistant',
+                    'succes': False
+                    })
+        else:
+            requete.isbn = request.json.get('isbn')
+            requete.titre = request.json.get('titre')
+            requete.date_publication = request.json.get('date_publication')
+            requete.auteur = request.json.get('auteur')
+            requete.editeur = request.json.get('editeur')
+            requete.categorie_id = request.json.get('categorie_id')
             db.session.commit()
             return jsonify({
-                'Notification':'enregistrement effectué',
-                'Nombre de Livres':len(Livres.query.all()),
-                'succes': True
-                })
+                                'Notification':'Modifie avec succes',
+                                'id categorie moodifiee':idbook,
+                                'succes': True
+                                })
+      
 
-#Ajout de l'option debug
+
+
+
+
+
+
+
+
+
+
+####################################################################################################################################################################
+#
+#
+#
+#Error handling
+#
+#
+#
+####################################################################################################################################################################
+
+
+@BookApi.errorhandler(404)
+def page_not_found(e):
+    return jsonify({
+        "succes":False,
+        "response":"Ressource not found",
+    })
+    
+    
+@BookApi.errorhandler(400)
+def page_not_found(e):
+    return jsonify({
+        "succes":False,
+        "response":"Bad request",
+    })
+        
+
+@BookApi.errorhandler(405)
+def page_not_found(e):
+    return jsonify({
+        "succes":False,
+        "response":"Method not allowed",
+    })
+    
+
 if __name__=="__name__":
     BookApi.run(debug=True)
    
