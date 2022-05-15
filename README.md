@@ -1,5 +1,18 @@
 # API FOR BOOK
 ## Getting Started
+## Contents
+
+1-Project detail
+2-Installing Dependencies
+
+# 1-Project detail
+This project is a class project given us by Mr OURO. The goals of this project can be summarized in these points:
+- You need to build your API using python Flask / base
+Postgres data
+- You should document your API specifying the responses you
+get after running each endpoint
+- Deploy your API on the Heroku Cloud Platform
+
 
 ### Installing Dependencies
 
