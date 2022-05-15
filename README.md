@@ -4,6 +4,7 @@
 
 1. Project detail
 2. Installing Dependencies
+3. Project setup
 
 # 1-Project detail
 This project is a class project given us by Mr OURO. The goals of this project can be summarized in these points:
@@ -47,12 +48,8 @@ We recommend working within a virtual environment whenever using Python for proj
 
 You can also use python extension for vscode if you are using visual studio code. you can find it on [vs code market place](https://marketplace.visualstudio.com/items?itemName=ms-python.python ) 
 
-#### PIP Dependencies
 
-Once you have your virtual environment setup and running, install dependencies by naviging to the `/plants_api` directory and running:
+# 3- Project setup
 
-```bash
-pip install -r requirements.txt
-or
-pip3 install -r requirements.txt
-```
+#### Database setup
+The project were made with postgres sql as database. You can use whatever database you want cause we used SQLAlchemy, an ORM of Flask. Check out the [official web site](https://www.sqlalchemy.org/)
