@@ -2,8 +2,8 @@
 ## Getting Started
 ## Contents
 
-1-Project detail
-2-Installing Dependencies
+1. Project detail
+2. Installing Dependencies
 
 # 1-Project detail
 This project is a class project given us by Mr OURO. The goals of this project can be summarized in these points:
