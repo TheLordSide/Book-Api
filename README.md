@@ -289,7 +289,7 @@ http://127.0.0.1:5000/book/showbooklist/1
 
 ##### Add a book
 
-This endpoints returns success value, Number of saved book, the updated category ID
+This endpoints returns success value, Number of saved book
 the URL based on local server :
 ```bash
 http://127.0.0.1:5000/book/addbooks
@@ -304,22 +304,49 @@ http://127.0.0.1:5000/book/addbooks
 
 ```
 
-#### DELETE/book/deletebook
+#### DELETE/book/deletebook/?id
 
-##### Add a book
+##### Delete a book
 
-This endpoints returns success value, Number of saved book, the updated category ID
+This endpoints returns success value, Number of saved books, the deleted book ID
 the URL based on local server :
 ```bash
-http://127.0.0.1:5000/book/addbooks
+http://127.0.0.1:5000/book/deletebook/
 
 ```
 ```bash
 {
-    "Nombre de Livres": 4,
-    "Response": "enregistrement effectué",
+    "Livre effacé": 4,
+    "Nombre de Livres": 3,
+    "Response": "Suppression effectuée correctement",
     "success": true
 }
 
 ```
+#### GET/bookbook/showbooklist/?id
 
+##### Delete a book
+
+This endpoints returns success value, Number of saved books, The searched book by category ID
+the URL based on local server :
+```bash
+http://127.0.0.1:5000/book/showbooklist/4
+
+```
+```bash
+{
+    "Id recherché": 3,
+    "Liste de Livres": [
+        {
+            "auteur": "Lord",
+            "categorie_id": 3,
+            "date_publication": "Mon, 25 Jul 1977 00:00:00 GMT",
+            "editeur": "Yves le curseur",
+            "id": 3,
+            "isbn": "123456787",
+            "titre": "la peche du dimanche"
+        }
+    ],
+    "success": true
+}
+```
