@@ -70,9 +70,11 @@ There are 4 HTTP methods used : GET, POST, PATCH, DELETE for Book and Category.
 #### GET/book/showallcategories
 
 ##### Show all categories
+
 This endpoints returns the list of all categories, success value, Number of saved categories.
+the URL based on local server :
 ```bash
-the URL based on local server : http://127.0.0.1:5000/book/showallcategories
+ http://127.0.0.1:5000/book/showallcategories
 
 ```
 
@@ -124,15 +126,88 @@ the URL based on local server : http://127.0.0.1:5000/book/showallcategories
     "success": true
 }
 ```
+
+#### POST/book/addcategories
+
 ##### Add a category
+
 This endpoints returns success value, Number of saved categories.
+the URL based on local server :
 ```bash
-the URL based on local server : http://127.0.0.1:5000/book//addcategories
+http://127.0.0.1:5000/book/addcategories
 
 ```
 ```bash
 {
-    "libelle_categorie":"Divertissement"
+    "Nombre de Categorie": 8,
+    "Response": "enregistrement effectué",
+    "success": true
+}
+
+
+```
+
+#### GET/book/showallcategories/?id
+
+##### Search category by ID
+
+This endpoints returns success value, a list result from the search by ID of a category.
+the URL based on local server :
+```bash
+ http://127.0.0.1:5000/book/showallcategories/1
+
+```
+```bash
+{
+    "Id recherche": 1,
+    "Listecategorie": [
+        {
+            "id": 1,
+            "libelle": "Fiction"
+        }
+    ],
+    "Nombre de categories": 10,
+    "success": true
+}
+
+```
+
+#### DELETE/book/deletecategorie/?id
+
+##### Delete a category by ID
+
+This endpoints returns success value, Number of saved categories, the deleted category ID
+the URL based on local server :
+```bash
+http://127.0.0.1:5000/book/deletecategorie/10
+
+```
+```bash
+{
+    "Categorie effacée": 10,
+    "Nombre de Categories": 7,
+    "Response": "Suppression effectuée correctement",
+    "success": true
+}
+
+```
+
+#### PATCH/book/updatecategory/?id
+
+##### Update a category by ID
+
+This endpoints returns success value, Number of saved categories, the updated category ID
+the URL based on local server :
+```bash
+http://127.0.0.1:5000/book/updatecategory/3
+
+```
+```bash
+{
+    "Nombre de Categories": 8,
+    "Response": "Modifie avec succes",
+    "id categorie moodifiee": 3,
+    "success": true
 }
 
 ```

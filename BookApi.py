@@ -65,23 +65,28 @@ def index():
 
 @BookApi.route('/book/deletecategorie/<int:idcat>', methods=['DELETE'])
 def deletecategory(idcat):
-    if request.method=='DELETE':
-        requete= Categories.query.get(idcat)
+     try:
+        if request.method=='DELETE':
+                requete= Categories.query.get(idcat)
         if not requete: 
             return jsonify({
-                    'Notification':'la categorie que vous entrez est indisponible',
+                    'Error':'la categorie que vous entrez est indisponible',
                     'Nombre de Categorie': len(Categories.query.all()),
-                    'succes': False
+                    'success': False
                     })
         else:
             db.session.delete(requete)
             db.session.commit()
             return  jsonify({
-                    'Notification':'Suppression effectuée correctement',
-                    'Nombre de Categorie': len(Categories.query.all()),
+                    'Response':'Suppression effectuée correctement',
+                    'Nombre de Categories': len(Categories.query.all()),
                     'Categorie effacée': idcat,
-                    'succes': True
+                    'success': True
                     })
+        
+     except:  
+            abort(405)
+    
 
 
 
@@ -98,28 +103,31 @@ def deletecategory(idcat):
 
 @BookApi.route('/book/updatecategory/<int:idcat>', methods=['PATCH'])
 def updatecategory(idcat):
-    if request.method=='PATCH':
-        requete= Categories.query.get(idcat)
+   try:
+        if request.method=='PATCH':
+            requete= Categories.query.get(idcat)
         if not requete: 
             return jsonify({
-                    'Notification':'id entré est inexistant',
-                    'succes': False
+                    'Error':'id entré est inexistant',
+                    'success': False
                     })
         else:
             requete.libelle_categorie = request.json.get('libelle_categorie')
             if requete.libelle_categorie == "":
                   return jsonify({
-                                'Notification':'Aucune categorie entree',
-                                'succes': False
+                                'Error':'Aucune categorie entree',
+                                'success': False
                                 })
             else:
                 db.session.commit()
                 return jsonify({
-                                'Notification':'Modifie avec succes',
+                                'Response':'Modifie avec succes',
                                 'id categorie moodifiee':idcat,
-                                'succes': True
+                                'Nombre de Categories': len(Categories.query.all()),
+                                'success': True
                                 })
-
+   except:
+             abort(405)
 
 
 ####################################################################################################################################################################
@@ -215,11 +223,12 @@ def showallcategories():
             
 @BookApi.route('/book/showallcategories/<int:idcat>', methods=['GET']) 
 def showonecat(idcat):
+      try:
         requete= Categories.query.filter(Categories.id==idcat).all()
         if not requete:
            return jsonify({
                'Error' : 'Aucune categorie ne correspond au id entree',
-               'succes': False
+               'success': False
                }) 
         categoriearray=[]
         for row in requete:
@@ -229,13 +238,19 @@ def showonecat(idcat):
             categoriearray.append(requestObj)
         if not categoriearray:
               return jsonify({
-               'Notification' : 'Aucune categorie ne correspond au id entree',
-               'succes': False
+               'Error' : 'Aucune categorie ne correspond au id entree',
+               'success': False
                })  
         else:
             if categoriearray:
-                return jsonify({'Listecategorie' : categoriearray})          
-
+                return jsonify({
+                    'Listecategorie' : categoriearray,
+                    'Nombre de categories':len(Categories.query.all()),
+                    'Id recherche': idcat,
+                    'success': True
+                    })         
+      except: 
+                abort(405)
                     
 ####################################################################################################################################################################
 #
@@ -248,6 +263,7 @@ def showonecat(idcat):
 ####################################################################################################################################################################   
 @BookApi.route('/book/showbooklist', methods=['GET'])
 def showbooklist():
+    try:
      requete= Livres.query.all()
      Livrearray=[]
      for row in requete:
@@ -273,7 +289,8 @@ def showbooklist():
                     'Listecategorie' : Livrearray,
                     'succes': True
                     })
-
+    except:
+            abort(405)
 
 ####################################################################################################################################################################
 #
@@ -288,10 +305,11 @@ def showbooklist():
 
 @BookApi.route('/book/showbooklist/<int:idlivre>', methods=['GET'])
 def showbookbyid(idlivre):
+    try:
      requete= Livres.query.filter(Livres.id==idlivre).all()
      if not requete:
            return jsonify({
-               'Notification' : 'Aucun Livre ne correspond au id entré',
+               'Erreur' : 'Aucun Livre ne correspond au id entré',
                'succes': False
                }) 
      Livrearray=[]
@@ -307,7 +325,7 @@ def showbookbyid(idlivre):
             Livrearray.append(requestObj)
      if not Livrearray:
             return jsonify({
-                'Notification':'Aucun livre enregistré',
+                'Erreur':'Aucun livre enregistré',
                 'Nombre de livres':len(requete),
                 'succes': False
                 })  
@@ -318,7 +336,8 @@ def showbookbyid(idlivre):
                     'Listecategorie' : Livrearray,
                     'succes': True
                     })
-
+    except:
+             abort(405)
 
 ####################################################################################################################################################################
 #
