@@ -16,7 +16,7 @@ db=SQLAlchemy(BookApi)
 class Categories(db.Model):
    __tablename__='Categories'
    id = db.Column(db.Integer, primary_key=True)
-   libelle_categorie = db.Column(db.String(10), nullable=False)
+   libelle_categorie = db.Column(db.String(50), nullable=False)
    livres=db.relationship('Livres', backref='Categories', lazy=True)
    def __init__(self,libelle_categorie):
         self.libelle_categorie=libelle_categorie
@@ -139,15 +139,14 @@ def addcategories():
         Libellecat=request.json.get('libelle_categorie')
         if not Libellecat:
             return jsonify({
-                'Notification':'Aucune valeur pour le libelle entree',
+                'Error':'Aucune valeur entree',
                 'succes': False  
                 })
         session['Libelle']=Libellecat
         requete=Categories.query.filter(Categories.libelle_categorie==Libellecat).all()
         if requete:
             return jsonify({
-                'Notification':'La categorie entrée existe déjà',
-                'Nombre de Categorie':len(Categories.query.all()),
+                'Erreur':'La categorie entrée existe déjà',
                 'succes': False  
                 })
         else:
@@ -156,7 +155,7 @@ def addcategories():
                 db.session.add(cat)
                 db.session.commit()
                 return jsonify({
-                    'Notification':'enregistrement effectué',
+                    'Response':'enregistrement effectué',
                     'Nombre de Categorie':len(Categories.query.all()),
                     'succes': True    
                 })
@@ -174,27 +173,30 @@ def addcategories():
                 
 @BookApi.route('/book/showallcategories', methods=['GET'])
 def showallcategories():
-    if request.method=='GET':   
-        requete= Categories.query.all()
-        categoriearray=[]
-        for row in requete:
-            requestObj={}
-            requestObj['id']=row.id
-            requestObj['libelle']=row.libelle_categorie
-            categoriearray.append(requestObj)
-        if not categoriearray:
-            return jsonify({
-                'Notification':'Aucune categorie disponible',
-                'Nombre de categories':len(requete),
-                'succes': False,
-                })  
-        else:
-            if categoriearray:
+    try:
+        if request.method=='GET':   
+            requete= Categories.query.all()
+            categoriearray=[]
+            for row in requete:
+                requestObj={}
+                requestObj['id']=row.id
+                requestObj['libelle']=row.libelle_categorie
+                categoriearray.append(requestObj)
+            if not categoriearray:
                 return jsonify({
+                    'Error':'Aucune categorie disponible',
                     'Nombre de categories':len(requete),
-                    'Listecategorie' : categoriearray,
-                    'succes': True
-                    })
+                    'success': False,
+                    })  
+            else:
+                if categoriearray:
+                    return jsonify({
+                        'Nombre de categories':len(requete),
+                        'Liste de categories' : categoriearray,
+                        'success': True
+                        })
+    except:
+        abort(405)
                 
 
 
@@ -214,7 +216,7 @@ def showonecat(idcat):
         requete= Categories.query.filter(Categories.id==idcat).all()
         if not requete:
            return jsonify({
-               'Notification' : 'Aucune categorie ne correspond au id entree',
+               'Error' : 'Aucune categorie ne correspond au id entree',
                'succes': False
                }) 
         categoriearray=[]

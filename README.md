@@ -70,7 +70,55 @@ There are 4 HTTP methods used : GET, POST, PATCH, DELETE for Book and Category.
 #### Category
 
 ##### Show all categories
-This endpoints returns the list of all categories.
+This endpoints returns the list of all categories, success value, Number of saved categories.
 
 the URL based on local server : http://127.0.0.1:5000/book/showallcategories
 
+```bash
+{
+    "Liste de categories": [
+        {
+            "id": 1,
+            "libelle": "Fiction"
+        },
+        {
+            "id": 2,
+            "libelle": "Horreur"
+        },
+        {
+            "id": 3,
+            "libelle": "Conte"
+        },
+        {
+            "id": 4,
+            "libelle": "Harlequin"
+        },
+        {
+            "id": 5,
+            "libelle": "Science"
+        },
+        {
+            "id": 6,
+            "libelle": "Mecanique"
+        },
+        {
+            "id": 7,
+            "libelle": "Biologie"
+        },
+        {
+            "id": 8,
+            "libelle": "Manuel"
+        },
+        {
+            "id": 9,
+            "libelle": "Etudes"
+        },
+        {
+            "id": 10,
+            "libelle": "Divertissement"
+        }
+    ],
+    "Nombre de categories": 10,
+    "success": true
+}
+```
