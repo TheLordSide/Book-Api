@@ -278,16 +278,16 @@ def showbooklist():
             Livrearray.append(requestObj)
      if not Livrearray:
             return jsonify({
-                'Notification':'Aucun livre enregistré',
+                'Erreur':'Aucun livre enregistré',
                 'Nombre de livres':len(requete),
-                'succes': False
+                'success': False
                 })  
      else:
             if Livrearray:
                 return jsonify({
                     'Nombre de livres':len(requete),
-                    'Listecategorie' : Livrearray,
-                    'succes': True
+                    'Liste de livres' : Livrearray,
+                    'success': True
                     })
     except:
             abort(405)
@@ -310,7 +310,7 @@ def showbookbyid(idlivre):
      if not requete:
            return jsonify({
                'Erreur' : 'Aucun Livre ne correspond au id entré',
-               'succes': False
+               'success': False
                }) 
      Livrearray=[]
      for row in requete:
@@ -327,14 +327,14 @@ def showbookbyid(idlivre):
             return jsonify({
                 'Erreur':'Aucun livre enregistré',
                 'Nombre de livres':len(requete),
-                'succes': False
+                'success': False
                 })  
      else:
             if Livrearray:
                 return jsonify({
                     'Id recherché' : idlivre,
                     'Listecategorie' : Livrearray,
-                    'succes': True
+                    'success': True
                     })
     except:
              abort(405)
@@ -351,36 +351,47 @@ def showbookbyid(idlivre):
 
 @BookApi.route('/book/addbooks', methods=['POST'])
 def addbooks():
-        if request.method=='POST':
-            isbn=request.json.get('isbn')
-            titre=request.json.get('titre')
-            date_publication=request.json.get('date_publication')
-            auteur=request.json.get('auteur')
-            editeur=request.json.get('editeur')
-            categorieid=request.json.get('idcategorie')
-            requete=Categories.query.filter(Categories.id==categorieid).all()
-            if not requete:
-                return jsonify({
-                    'Notification':'la categorie que vous entrez est indisponible',
-                    'succes': False
-                    })
-            else:
-                session['isbn']=isbn
-                session['titre']=titre
-                session['date_publication']=date_publication
-                session['auteur']=auteur
-                session['editeur']=editeur
-                session['idcategorie']=categorieid
-                livre=Livres(isbn,titre,date_publication,auteur,editeur,categorieid)
-                db.session.add(livre)
-                db.session.commit()
-                return jsonify({
-                    'Notification':'enregistrement effectué',
-                    'Nombre de Livres':len(Livres.query.all()),
-                    'succes': True
-                    })
+        try:
+            if request.method=='POST':
+                isbn=request.json.get('isbn')
+                titre=request.json.get('titre')
+                date_publication=request.json.get('date_publication')
+                auteur=request.json.get('auteur')
+                editeur=request.json.get('editeur')
+                categorieid=request.json.get('idcategorie')
+                requete=Categories.query.filter(Categories.id==categorieid).all()
+                if not requete:
+                    return jsonify({
+                        'Error':'la categorie que vous entrez est indisponible',
+                        'succes': False
+                        })
+                else:    
+                    rqt = Livres.query.filter(
+                            Livres.isbn == isbn, Livres.date_publication == date_publication).all()
+                    if rqt:
+                            return jsonify({
+                                "Success": False,
+                                "Error": "Le code isbn existe déjà !"
+                            })
+                            
+                    elif not rqt:
+                        session['isbn']=isbn
+                        session['titre']=titre
+                        session['date_publication']=date_publication
+                        session['auteur']=auteur
+                        session['editeur']=editeur
+                        session['idcategorie']=categorieid
+                        livre=Livres(isbn,titre,date_publication,auteur,editeur,categorieid)
+                        db.session.add(livre)
+                        db.session.commit()
+                        return jsonify({
+                            'Response':'enregistrement effectué',
+                            'Nombre de Livres':len(Livres.query.all()),
+                            'success': True
+                            })
 
- 
+        except:
+                 abort(405)
 ####################################################################################################################################################################
 #
 #

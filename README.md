@@ -211,3 +211,115 @@ http://127.0.0.1:5000/book/updatecategory/3
 }
 
 ```
+
+#### GET/book/showbooklist
+
+##### Show a list of books
+
+This endpoints returns success value, Number of saved books, the list of saved books
+the URL based on local server :
+```bash
+http://127.0.0.1:5000/book/showbooklist
+
+```
+```bash
+
+{
+    "Liste de livres": [
+        {
+            "auteur": "aliexpress",
+            "categorie_id": 1,
+            "date_publication": "Mon, 25 May 1987 00:00:00 GMT",
+            "editeur": "kodjovi",
+            "id": 1,
+            "isbn": "12345678",
+            "titre": "Le vent se leve"
+        },
+        {
+            "auteur": "Lord",
+            "categorie_id": 2,
+            "date_publication": "Mon, 25 Jul 1977 00:00:00 GMT",
+            "editeur": "Yves le curseur",
+            "id": 2,
+            "isbn": "12345678",
+            "titre": "Ali aux pays des merveilles"
+        }
+    ],
+    "Nombre de livres": 2,
+    "success": true
+}
+
+
+```
+
+
+#### GET/book/showbooklist/id?
+
+##### Show a list of books
+
+This endpoints returns success value, Number of saved books, the book searched by ID
+the URL based on local server :
+```bash
+http://127.0.0.1:5000/book/showbooklist/1
+
+```
+```bash
+
+{
+    "Id recherché": 1,
+    "Listecategorie": [
+        {
+            "auteur": "aliexpress",
+            "categorie_id": 1,
+            "date_publication": "Mon, 25 May 1987 00:00:00 GMT",
+            "editeur": "kodjovi",
+            "id": 1,
+            "isbn": "12345678",
+            "titre": "Le vent se leve"
+        }
+    ],
+    "success": true
+}
+
+
+```
+
+
+#### POST/book/addbooks
+
+##### Add a book
+
+This endpoints returns success value, Number of saved book, the updated category ID
+the URL based on local server :
+```bash
+http://127.0.0.1:5000/book/addbooks
+
+```
+```bash
+{
+    "Nombre de Livres": 4,
+    "Response": "enregistrement effectué",
+    "success": true
+}
+
+```
+
+#### DELETE/book/deletebook
+
+##### Add a book
+
+This endpoints returns success value, Number of saved book, the updated category ID
+the URL based on local server :
+```bash
+http://127.0.0.1:5000/book/addbooks
+
+```
+```bash
+{
+    "Nombre de Livres": 4,
+    "Response": "enregistrement effectué",
+    "success": true
+}
+
+```
+
