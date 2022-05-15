@@ -13,12 +13,26 @@ Postgres data
 get after running each endpoint
 - Deploy your API on the Heroku Cloud Platform
 
-
-### Installing Dependencies
+# 2-Installing Dependencies
 
 #### Python 3.10.4
 #### pip 22.1 from C:\Users\Sidewinder\AppData\Local\Programs\Python\Python310\lib\site-packages\pip (python 3.10)
 Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
+
+#### Packages used
+The requiered package.txt inside the tree structure contains all the requierd packages you need to use the API.
+
+```bash
+BOOK-API/
+|----.gitignore
+|----API_BIBLIOTHEQUE.postman_collection.json
+|----Bookapi.py
+|----README.md
+|----requieredpackage.txt 
+
+
+
+
 
 #### Virtual Enviornment
 
