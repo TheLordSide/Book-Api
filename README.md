@@ -59,10 +59,28 @@ The project were made with postgres sql as database. You can use whatever databa
 Base URL: At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, http://localhost:5000; which is set as a proxy in frontend configuration.
 
 #### Errors Handling
-Errors are retourned as JSON objects in the following format: { "success":False "error": 400 "message":"Bad request }
+Errors are retourned as JSON objects in the following format:
 
-The API will return four error types when requests fail: . 400: Bad request . 500: Internal server error . 422: Unprocessable . 404: Not found
+```bash
+{
+    "response": "Method not allowed",
+    "succes": false
+}
+```
 
+```bash
+{
+    "response": "Ressource not found",
+    "succes": false
+}
+```
+
+The API will return two errors types when requests fail: 
+
+```bash
+. 405: Method not allowed 
+. 404: Not found
+```
 
 # 4- Api Endpoints
 There are 4 HTTP methods used : GET, POST, PATCH, DELETE for Book and Category.
@@ -311,7 +329,7 @@ http://127.0.0.1:5000/book/addbooks
 This endpoints returns success value, Number of saved books, the deleted book ID
 the URL based on local server :
 ```bash
-http://127.0.0.1:5000/book/deletebook/
+http://127.0.0.1:5000/book/deletebook/4
 
 ```
 ```bash

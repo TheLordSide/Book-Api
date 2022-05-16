@@ -522,9 +522,6 @@ def updatebook(idbook):
 
 
 
-
-
-
 ####################################################################################################################################################################
 #
 #
@@ -543,14 +540,7 @@ def page_not_found(e):
         "response":"Ressource not found",
     })
     
-    
-@BookApi.errorhandler(400)
-def page_not_found(e):
-    return jsonify({
-        "succes":False,
-        "response":"Bad request",
-    })
-        
+         
 
 @BookApi.errorhandler(405)
 def page_not_found(e):
