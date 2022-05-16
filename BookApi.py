@@ -491,30 +491,39 @@ def deletebook(idlivre):
 #
 #################################################################################################################################################################### 
 
-@BookApi.route('/book/updatebook/<int:idbook>', methods=['PATCH'])
-def updatebook(idbook):
+@BookApi.route('/book/updatebook/<int:id>', methods=['PATCH'])
+def updatebook(id):
     try:
-      if request.method=='PATCH':
-            
-            requete= Livres.query.get(idbook)
-            if not requete: 
-                return jsonify({
-                        'Erreur':'id entré est inexistant',
-                        'success': False
-                        })
-            else:
-                requete.isbn = request.json.get('isbn')
-                requete.titre = request.json.get('titre')
-                requete.date_publication = request.json.get('date_publication')
-                requete.auteur = request.json.get('auteur')
-                requete.editeur = request.json.get('editeur')
-                requete.categorie_id = request.json.get('categorie_id')
+        if request.method=='PATCH':
+            requete= Livres.query.get(id)
+        if not requete: 
+            return jsonify({
+                    'Error':'id entré est inexistant',
+                    'success': False
+                    })
+               
+        else:
+            requete.isbn = request.json.get('isbn')
+            requete.titre= request.json.get('titre')
+            requete.date_publication= request.json.get('date_publication')
+            requete.auteur= request.json.get('auteur')
+            requete.editeur= request.json.get('editeur')
+            requete.categorie_id= request.json.get('categorie_id')
+            rqt = Livres.query.filter(Livres.isbn == requete.isbn, Livres.date_publication == requete.date_publication).all()
+            if rqt:
+                    return jsonify({
+                                "Success": False,
+                                "Error": "Le code isbn existe déjà !"
+                            })
+                            
+            elif not rqt:           
                 db.session.commit()
                 return jsonify({
-                                    'Response':'Modifie avec succes',
-                                    'id categorie moodifiee':idbook,
-                                    'success': True
-                                    })      
+                                'Response':'Modifie avec succes',
+                                'id categorie moodifiee':id,
+                                'Nombre de Categories': len(Livres.query.all()),
+                                'success': True
+                                })
     except:
              abort(405)
         
