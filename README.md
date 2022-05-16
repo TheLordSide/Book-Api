@@ -368,3 +368,22 @@ http://127.0.0.1:5000/book/showbooklist/4
     "success": true
 }
 ```
+
+#### PATCH/book/updatebook/?id
+
+##### Update a book
+
+This endpoints returns success value, The updated book by ID, number of book
+the URL based on local server :
+```bash
+http://127.0.0.1:5000/book/updatebook/1
+
+```
+```bash
+{
+    "Nombre de Livres": 6,
+    "Response": "Modifie avec succes",
+    "id categorie moodifiee": 1,
+    "success": true
+}
+```

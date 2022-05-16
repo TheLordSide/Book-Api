@@ -414,6 +414,11 @@ def addbooks():
                 editeur=request.json.get('editeur')
                 categorieid=request.json.get('idcategorie')
                 requete=Categories.query.filter(Categories.id==categorieid).all()
+                if isbn == "" and date_publication == "" and auteur == "" and titre == "" and editeur == "" and categorieid == "" :
+                            return jsonify({
+                                "Success": False,
+                                "Error": "Vos champs sont vides !"
+                            })
                 if not requete:
                     return jsonify({
                         'Error':'la categorie que vous entrez est indisponible',
@@ -509,19 +514,17 @@ def updatebook(id):
             requete.auteur= request.json.get('auteur')
             requete.editeur= request.json.get('editeur')
             requete.categorie_id= request.json.get('categorie_id')
-            rqt = Livres.query.filter(Livres.isbn == requete.isbn, Livres.date_publication == requete.date_publication).all()
-            if rqt:
-                    return jsonify({
+            
+            if requete.isbn == "" and requete.date_publication == "" and requete.titre == "" and requete.auteur == "" and requete.editeur == "" and requete.categorie_id == "" :
+                            return jsonify({
                                 "Success": False,
-                                "Error": "Le code isbn existe déjà !"
+                                "Error": "Vos champs sont vides !"
                             })
-                            
-            elif not rqt:           
-                db.session.commit()
-                return jsonify({
+            db.session.commit()
+            return jsonify({
                                 'Response':'Modifie avec succes',
                                 'id categorie moodifiee':id,
-                                'Nombre de Categories': len(Livres.query.all()),
+                                'Nombre de Livres': len(Livres.query.all()),
                                 'success': True
                                 })
     except:
